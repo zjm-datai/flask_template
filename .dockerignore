@@ -1,0 +1,15 @@
+.env
+*.env.*
+
+storage/
+docker/
+
+logs
+*.log*
+
+.idea
+.vscode
+.mypy_cache
+.ruff_cache
+
+.venv

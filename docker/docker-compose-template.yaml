@@ -1,0 +1,19 @@
+x-shared-env: &shared-api-worker-env
+services:
+  
+  # API service
+  api:
+    image: ningtang/{project_name}:1.0.0
+    restart: always
+    environment:
+      # Use the shared environment variables
+      <<: *shared-api-worker-env
+      # Startup mode, 'api' starts the API server.
+      MODE: api
+    ports:
+      - "30035:${APP_PORT}"
+    volumes:
+      # Mount the storage directory to the container, for storing user files.
+      - ./volumes/app/storage:/app/api/storage
+
+  # Maybe add a nginx
