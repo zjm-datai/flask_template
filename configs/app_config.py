@@ -1,4 +1,5 @@
 
+from pathlib import Path
 
 from pydantic_settings import (
     BaseSettings,
@@ -7,10 +8,14 @@ from pydantic_settings import (
     TomlConfigSettingsSource
 )
 
+from libs.file_utils import search_file_upwards
+
 from .middleware import MiddlewareConfig
 from .feature import FeatureConfig
+from .deploy import DeploymentConfig
 
 class AppConfig(
+    DeploymentConfig,
     MiddlewareConfig,
     FeatureConfig
 ):

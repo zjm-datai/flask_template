@@ -1,6 +1,6 @@
 
 from pydantic import (
-    Field, PositiveInt,
+    AliasChoices, Field, PositiveInt, computed_field,
 )
 from pydantic_settings import BaseSettings
 
@@ -47,6 +47,20 @@ class LoggingConfig(BaseSettings):
         default="UTC",
     )
 
+class HttpConfig(BaseSettings):
+    """
+    HTTP-related configurations for the application
+    """
+
+    inner_CONSOLE_CORS_ALLOW_ORIGINS: str = Field(
+        description="Comma-separated list of allowed origins for CORS in the console",
+        validation_alias=AliasChoices("CONSOLE_CORS_ALLOW_ORIGINS", "CONSOLE_WEB_URL"),
+        default="",
+    )
+
+    @computed_field
+    def CONSOLE_CORS_ALLOW_ORIGINS(self) -> list[str]:
+        return self.inner_CONSOLE_CORS_ALLOW_ORIGINS.split(",")
 
 class SwaggerUIConfig(BaseSettings):
     SWAGGER_UI_ENABLED: bool = Field(
@@ -62,5 +76,6 @@ class SwaggerUIConfig(BaseSettings):
 class FeatureConfig(
     LoggingConfig,
     SwaggerUIConfig,
+    HttpConfig,
 ):
     pass
